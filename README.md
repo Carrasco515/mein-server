@@ -8,16 +8,20 @@ The goal of this project is to learn how to build, containerize and run a small 
 
 ## Tech Stack
 
-Python
-FastAPI
-Docker
-Docker Compose
+Python  
+FastAPI  
+Docker  
+Docker Compose  
+Git  
+GitHub  
 
-## Endpoints
+## API Endpoints
 
-GET /
-GET /health
-GET /docs
+| Method | Endpoint | Description |
+|--------|----------|-------------|
+| GET | / | Returns the main status message |
+| GET | /health | Returns the health status of the application |
+| GET | /docs | Opens the automatic FastAPI documentation |
 
 ## Run the project
 
