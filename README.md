@@ -27,3 +27,60 @@ GitHub
 
 ```bash
 docker compose up --build
+## Run with Kubernetes
+
+This project can also be deployed to a local Kubernetes cluster.
+
+### Apply the Kubernetes manifests
+
+```bash
+kubectl apply -f kubernetes/deployment.yaml
+kubectl apply -f kubernetes/service.yaml
+```
+
+### Check the deployment
+
+```bash
+kubectl get deployments
+kubectl get pods
+kubectl get services
+```
+
+### Access the application with port forwarding
+
+```bash
+kubectl port-forward deployment/mein-server 8080:8000
+```
+
+Open the application in the browser:
+
+```text
+http://localhost:8080
+```
+
+Health check:
+
+```text
+http://localhost:8080/health
+```
+
+API documentation:
+
+```text
+http://localhost:8080/docs
+```
+
+### Stop port forwarding
+
+Press:
+
+```text
+CTRL + C
+```
+
+## Kubernetes files
+
+| File | Description |
+|------|-------------|
+| kubernetes/deployment.yaml | Defines the application deployment |
+| kubernetes/service.yaml | Exposes the application inside Kubernetes |
