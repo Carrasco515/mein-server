@@ -1,3 +1,5 @@
+import os
+
 from fastapi import FastAPI
 
 app = FastAPI(
@@ -19,4 +21,13 @@ def home():
 def health_check():
     return {
         "status": "healthy"
+    }
+
+
+@app.get("/config")
+def get_config():
+    return {
+        "app_name": os.getenv("APP_NAME", "not set"),
+        "app_version": os.getenv("APP_VERSION", "not set"),
+        "app_env": os.getenv("APP_ENV", "not set")
     }
