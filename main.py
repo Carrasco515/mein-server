@@ -31,3 +31,14 @@ def get_config():
         "app_version": os.getenv("APP_VERSION", "not set"),
         "app_env": os.getenv("APP_ENV", "not set")
     }
+
+
+@app.get("/secret-status")
+def secret_status():
+    api_key = os.getenv("API_KEY")
+    db_password = os.getenv("DB_PASSWORD")
+
+    return {
+        "api_key_loaded": api_key is not None,
+        "db_password_loaded": db_password is not None
+    }

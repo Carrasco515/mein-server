@@ -21,6 +21,8 @@ spec:
           envFrom:
             - configMapRef:
                 name: mein-server-config
+            - secretRef:
+                name: mein-server-secret
           resources:
             requests:
               cpu: "100m"
