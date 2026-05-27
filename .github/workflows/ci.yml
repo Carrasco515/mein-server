@@ -1,54 +1,65 @@
-import sys
-from pathlib import Path
+name: CI
 
-from fastapi.testclient import TestClient
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
 
-PROJECT_ROOT = Path(__file__).resolve().parents[1]
-sys.path.insert(0, str(PROJECT_ROOT))
+jobs:
+  python-tests:
+    name: Python tests
+    runs-on: ubuntu-latest
+    env:
+      PYTHONPATH: ${{ github.workspace }}
 
-from main import app
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
 
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: "pip"
 
-client = TestClient(app)
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt -r requirements-dev.txt
 
+      - name: Check Python syntax
+        run: python -m compileall .
 
-def test_home_endpoint():
-    response = client.get("/")
+      - name: Run tests
+        run: python -m pytest -q
 
-    assert response.status_code == 200
-    assert response.json()["status"] == "online"
+  docker-build:
+    name: Docker build
+    runs-on: ubuntu-latest
 
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
 
-def test_health_endpoint():
-    response = client.get("/health")
+      - name: Build Docker image
+        run: docker build -t mein-server-server:ci .
 
-    assert response.status_code == 200
-    assert response.json() == {"status": "healthy"}
+  kustomize-render:
+    name: Kustomize render
+    runs-on: ubuntu-latest
 
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
 
-def test_config_endpoint(monkeypatch):
-    monkeypatch.setenv("APP_NAME", "Mein Server API")
-    monkeypatch.setenv("APP_VERSION", "1.0.0")
-    monkeypatch.setenv("APP_ENV", "test")
+      - name: Check kubectl client
+        run: kubectl version --client
 
-    response = client.get("/config")
+      - name: Render dev overlay
+        run: kubectl kustomize kubernetes/overlays/dev
 
-    assert response.status_code == 200
-    assert response.json() == {
-        "app_name": "Mein Server API",
-        "app_version": "1.0.0",
-        "app_env": "test",
-    }
-
-
-def test_secret_status_endpoint(monkeypatch):
-    monkeypatch.setenv("API_KEY", "dummy-api-key")
-    monkeypatch.setenv("DB_PASSWORD", "dummy-password")
-
-    response = client.get("/secret-status")
-
-    assert response.status_code == 200
-    assert response.json() == {
-        "api_key_loaded": True,
-        "db_password_loaded": True,
-    }
+      - name: Render prod overlay
+        run: kubectl kustomize kubernetes/overlays/prod
