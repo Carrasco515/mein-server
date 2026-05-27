@@ -14,8 +14,8 @@ spec:
     spec:
       containers:
         - name: mein-server
-          image: mein-server-server:v1
-          imagePullPolicy: Never
+          image: ghcr.io/carrasco515/mein-server:latest
+          imagePullPolicy: Always
           ports:
             - containerPort: 8000
           envFrom:
