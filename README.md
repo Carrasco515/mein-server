@@ -1,5 +1,5 @@
 # My Server
-[![CI](https://github.com/Carrasco515/mein-server/actions/workflows/ci.yml/badge.svg)](https://github.com/Carrasco515/mein-server/actions/workflows/ci.yml)
+[![CI](https://github.com/Carrasco515/my-server/actions/workflows/ci.yml/badge.svg)](https://github.com/Carrasco515/my-server/actions/workflows/ci.yml)
 
 This is my first practical DevOps learning project.
 
@@ -50,7 +50,7 @@ kubectl get services
 ### Access the application with port forwarding
 
 ```bash
-kubectl port-forward deployment/mein-server 8080:8000
+kubectl port-forward deployment/my-server 8080:8000
 ```
 
 Open the application in the browser:

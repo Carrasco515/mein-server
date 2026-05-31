@@ -1,28 +1,28 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: mein-server
+  name: my-server
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: mein-server
+      app: my-server
   template:
     metadata:
       labels:
-        app: mein-server
+        app: my-server
     spec:
       containers:
-        - name: mein-server
-          image: ghcr.io/carrasco515/mein-server:latest
+        - name: my-server
+          image: ghcr.io/carrasco515/my-server:latest
           imagePullPolicy: Always
           ports:
             - containerPort: 8000
           envFrom:
             - configMapRef:
-                name: mein-server-config
+                name: my-server-config
             - secretRef:
-                name: mein-server-secret
+                name: my-server-secret
           resources:
             requests:
               cpu: "100m"

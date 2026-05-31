@@ -45,7 +45,7 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Build Docker image
-        run: docker build -t mein-server-server:ci .
+        run: docker build -t my-server-server:ci .
 
   kustomize-render:
     name: Kustomize render

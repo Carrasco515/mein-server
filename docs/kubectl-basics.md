@@ -9,7 +9,7 @@ kubectl get pods
 Increase the application to two running pods:
 
 ```bash
-kubectl scale deployment mein-server --replicas=2
+kubectl scale deployment my-server --replicas=2
 ## Resource requests and limits
 
 Kubernetes can define how much CPU and memory an application should request and how much it is allowed to use.
